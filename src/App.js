@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './app.css'
 
 const WIDTH = 50
@@ -6,7 +6,7 @@ const HEIGHT = 50
 
 const gridStyle = {
     display: 'grid',
-    width: WIDTH * 21,
+    width: WIDTH * 21 - 1,
     gridTemplateColumns: `repeat(${WIDTH}, 20px)`,
     borderStyle: 'solid',
     borderColor: 'black',
@@ -26,12 +26,6 @@ const cellDead = {
     height: 20,
     backgroundColor: 'black'
 }
-
-// const relativeIndexes = (row, col) => (
-//     Array(8).fill().map((_, i) => {
-
-//     })
-// )
 
 const relativeIndexes = (row, col) => [
     [row-1, col-1], [row-1, col], [row-1, col+1],
@@ -63,10 +57,8 @@ const checkNeighbors = (grid) => {
     return updateGrid
 }
 
-
-
 const seed = () => (
-    Array(HEIGHT).fill(null).map(() => Array(WIDTH).fill(null).map(() => Math.random() < .5))
+    Array(HEIGHT).fill(null).map(() => Array(WIDTH).fill(null).map(() => Math.random() < .2))
 )
 
 const App = () => {
@@ -78,6 +70,13 @@ const App = () => {
         setGrid(checkNeighbors(grid))
     }
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setGrid(checkNeighbors(grid))
+        }, 100)
+        return () => clearInterval(interval)
+    })
+    
     return (
     <div>
         <button onClick={incGen}>CLICK ME</button>
