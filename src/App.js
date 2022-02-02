@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import './app.css'
 
-const WIDTH = 50
+const WIDTH = window.innerWidth
 const HEIGHT = 50
+const RANDOM_PERC = .2
 
 const gridStyle = {
     display: 'grid',
-    width: WIDTH * 21 - 1,
+    width: WIDTH,
     gridTemplateColumns: `repeat(${WIDTH}, 20px)`,
     borderStyle: 'solid',
     borderColor: 'black',
@@ -58,7 +59,7 @@ const checkNeighbors = (grid) => {
 }
 
 const seed = () => (
-    Array(HEIGHT).fill(null).map(() => Array(WIDTH).fill(null).map(() => Math.random() < .2))
+    Array(HEIGHT).fill(null).map(() => Array(WIDTH).fill(null).map(() => Math.random() < RANDOM_PERC))
 )
 
 const App = () => {
@@ -73,7 +74,7 @@ const App = () => {
     useEffect(() => {
         const interval = setInterval(() => {
             setGrid(checkNeighbors(grid))
-        }, 100)
+        }, 500)
         return () => clearInterval(interval)
     })
     
